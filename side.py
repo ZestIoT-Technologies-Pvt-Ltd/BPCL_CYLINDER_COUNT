@@ -233,13 +233,24 @@ def side_model(img,darknet_image,network,class_names,truck_entry):
       
       x_res=int(img.shape[1])
       y_res=int(img.shape[0])
-      pts = np.array([[231,345],[231,460],[345,460],[345,345]]) # coordinate of Region of Interest
-      #pts = np.array([[231,355],[231,460],[345,460],[345,355]]) # coordinate of Region of Interest
-      img=cv2.rectangle(img,(231,345),(345,460),(0,255,255),2)
-      mask = np.zeros(img.shape[:2], np.uint8)
-      cv2.drawContours(mask, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
-      dst = cv2.bitwise_and(img, img, mask=mask)
-      frame_rgb = cv2.cvtColor(dst, cv2.COLOR_BGR2RGB)
+      img=cv2.rectangle(img,(260,350),(335,465),(0,255,255),2)
+ 
+      pts = np.array([[260,345],[260,460],[325,460],[325,345]])
+      mask1 = np.zeros(img.shape[:2], np.uint8)
+      cv2.drawContours(mask1, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
+      img1 = cv2.bitwise_and(img, img, mask=mask1)
+
+
+      pts = np.array([[231,385],[231,460],[345,460],[345,390]]) 
+      mask2 = np.zeros(img.shape[:2], np.uint8)
+      cv2.drawContours(mask2, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
+      img2 = cv2.bitwise_and(img, img, mask=mask2)
+    
+
+      #mask = mask1 | mask2
+      img3 = cv2.bitwise_or(img1,img2,mask= None)
+      frame_rgb = cv2.cvtColor(img3, cv2.COLOR_BGR2RGB)
+
       frame_resized = cv2.resize(frame_rgb,(darknet.network_width(network),darknet.network_height(network)),interpolation=cv2.INTER_LINEAR)
       darknet.copy_image_from_bytes(darknet_image,frame_resized.tobytes())
       result=darknet.detect_image(network,class_names,darknet_image, thresh=0.25)
