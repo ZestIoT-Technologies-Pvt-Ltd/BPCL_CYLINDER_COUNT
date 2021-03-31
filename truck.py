@@ -64,30 +64,30 @@ def truck_model(img,darknet_image,network,class_names):
 
     Remaining all the cases will set to false for truck_entry and truck_exit variables.
     """
-    if status == 0 and len(result) > 0 :
-      if entry_check == 540 :
-        status = 1
-        truck_entry = True
-        truck_exit = False
-        entry_time = datetime.now().time()
-        exit_check = 0
-      else :
-        entry_check = entry_check+1
-        truck_exit = False
-    elif status == 1 and len(result) == 0 :
-      if exit_check == 540 :
+    if status == 1 and len(result) > 0 :
+      if exit_check == 100 :
         status = 0
         truck_entry = False
         truck_exit = True
         exit_time = datetime.now().time()
         entry_check = 0
       else :
-        exit_check = exit_check +1 
+        exit_check = exit_check+1
         truck_entry = False
     elif status == 0 and len(result) == 0 :
-      truck_exit = False
-    elif status == 1 and len(result) > 0 :
+      if entry_check == 100 :
+        status = 1
+        truck_entry = True
+        truck_exit = False
+        entry_time = datetime.now().time()
+        exit_check = 0
+      else :
+        entry_check = entry_check +1 
+        truck_exit = False
+    elif status == 1 and len(result) == 0 :
       truck_entry = False
+    elif status == 0 and len(result) > 0 :
+      truck_exit = False
 
     shape = img.shape
     img = cv2.resize(img,(640,480))

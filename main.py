@@ -103,20 +103,42 @@ with open(write_path, 'w') as f_object:
     dictwriter_object.writeheader()
 
 
+web_image = 0
+
+def webBrowser_frame():
+	global web_image
+	try:
+		print("h1l0")
+		ret, jpeg = cv2.imencode('.jpg', web_image)
+		return jpeg.tobytes()
+
+	except:
+		return None
+
+
+
 def write_data_csv(dict):
 	with open(write_path, 'a') as f_object: 
 		dictwriter_object = csv.DictWriter(f_object, fieldnames=field_names) 
 		dictwriter_object.writerow(dict)
 		f_object.close()
 
+
+frame_count1 = 0
+frame_count2 = 0
+
 if __name__ == '__main__':
 		try:
 			darknet_image_L,network_L,class_names_L=tracker_model.load_model_truck()
 			darknet_image_S,network_S,class_names_S=tracker_model.load_model_side()
 			darknet_image_T,network_T,class_names_T=tracker_model.load_model_top()
-			cam1 = camera(cam1)
+			#cam1 = camera(cam1)
+			#time.sleep(1)
+			#cam2 = camera(cam2)
+			#time.sleep(1)
+			cam1 = cv2.VideoCapture('rtsp://admin:bpcl1234@192.168.55.183:554')
 			time.sleep(1)
-			cam2 = camera(cam2)
+			cam2 = cv2.VideoCapture('rtsp://admin:bpcl1234@192.168.55.182:554/ch01_265')
 			time.sleep(1)
 			#cam1 = cv2.VideoCapture("Side.mp4")
 			#cam2 = cv2.VideoCapture("Top.mp4")
@@ -128,10 +150,23 @@ if __name__ == '__main__':
 			while True:
 					try:
 						loop_start_time = datetime.now()
-						img1 = cam1.get_frame()
+						#frame_count1+=1
+						ret1,img1 = cam1.read()
+						#if((frame_count1 % 2) != 0):
+							#continue
+						#frame_count1 = 0
+
 						img1 = cv2.resize(img1,(640,480))
-						img2 = cam2.get_frame()
+						frame_count2+=1
+						ret2,img2 = cam2.read()
+						if((frame_count2 % 2) != 0):
+							continue
+
+						frame_count2 = 0
+
+						img2 = cv2.resize(img2,(1920,1080))
 						#img22 = cv2.resize(img22,(1280,720))
+						#if ret1 and ret2 is True:
 						print("Start_time",time.localtime())
 						truck_img, truck_entry, truck_exit = truck.truck_model(img2,darknet_image_L,network_L,class_names_L)
 						if truck_entry == True:
@@ -146,7 +181,7 @@ if __name__ == '__main__':
 						top_img = cv2.resize(top_img, (640,480))
 						concat_img = cv2.hconcat([side_img, top_img])
 						cv2.imshow('output',concat_img)
-						
+						#web_image = concat_img
 						if truck_entry == True:
 							print("truck_entry",truck_entry)
 							pp = str(datetime.now())[0:19].replace('-','')
@@ -183,3 +218,4 @@ if __name__ == '__main__':
 			out.release()
 		except Exception as e:
 			print("Error in Main File:",str(e))
+

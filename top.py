@@ -133,7 +133,7 @@ def get_input_data(result,img,x_res,y_res):
 			yco=int(float(cord[1]-cord[3]/2) * float(y_res/416))
 			xExt=int(float(cord[2]) * float(x_res/416))
 			yExt=int(float(cord[3]) * float(y_res/416)) 
-			img=cv2.rectangle(img,(xco,yco),(xco+xExt,yco+yExt),(0,0,255),2)
+			#img=cv2.rectangle(img,(xco,yco),(xco+xExt,yco+yExt),(0,0,255),2)
 
 			if className == 'cap':
 				if (ym <= line1_cap) and (ym >=line3_cap) :
@@ -265,7 +265,7 @@ def top_model(img,darknet_image,network,class_names,truck_entry):
 		pts = np.array([[[788,20],[1073,20],[1087,450],[757,450]]])
 		poly = np.array([[788,20],[1073,20],[1087,450],[757,450]], np.int32)
 		poly = poly.reshape((-1,1,2))
-		cv2.polylines(img,[poly],True,(0,255,255),3)
+		#cv2.polylines(img,[poly],True,(0,255,255),3)
 
 		mask = np.zeros(img.shape[:2], np.uint8)
 		cv2.drawContours(mask, [pts], -1, (255, 255, 255), -1, cv2.LINE_AA)
@@ -279,12 +279,12 @@ def top_model(img,darknet_image,network,class_names,truck_entry):
 		current_dict,current_len = get_input_data(result,img,x_res,y_res)
 
 		# Drawing the lines on the video frames.
-		img = cv2.line(img, (788,line1), (1087,line1), (0, 255, 0),2)
-		img = cv2.line(img, (788,line2), (1087,line2), (0, 255, 0),2)
-		img = cv2.line(img, (788,line3), (1087,line3), (0, 255, 0),2)
-		img = cv2.line(img, (788,line1_cap), (1087,line1_cap), (0, 255, 255),2)
-		img = cv2.line(img, (788,line2_cap), (1087,line2_cap), (0, 255, 255),2)
-		img = cv2.line(img, (788,line3_cap), (1087,line3_cap), (0, 255, 255),2)
+		#img = cv2.line(img, (788,line1), (1087,line1), (0, 255, 0),2)
+		#img = cv2.line(img, (788,line2), (1087,line2), (0, 255, 0),2)
+		#img = cv2.line(img, (788,line3), (1087,line3), (0, 255, 0),2)
+		#img = cv2.line(img, (788,line1_cap), (1087,line1_cap), (0, 255, 255),2)
+		#img = cv2.line(img, (788,line2_cap), (1087,line2_cap), (0, 255, 255),2)
+		#img = cv2.line(img, (788,line3_cap), (1087,line3_cap), (0, 255, 255),2)
 
 
 		"""
