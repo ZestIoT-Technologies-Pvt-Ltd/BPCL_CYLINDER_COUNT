@@ -1,0 +1,21 @@
+{
+	"camera1":"rtsp://admin:bpcl1234@192.168.55.183:554",
+	"camera2":"rtsp://admin:bpcl1234@192.168.55.182:554/ch01_265",
+	"side":{
+		"configPath":"side/yolov4-obj.cfg",
+		"weightPath":"side/yolov4-obj_best.weights",
+		"metaPath":"side/obj.data"
+	},
+
+	"top":{
+		"configPath":"top/yolov4-tiny-obj.cfg",
+		"weightPath":"top/yolov4-tiny-obj_best.weights",
+		"metaPath":"top/obj.data"
+	},
+
+	"truck":{
+		"configPath":"truck/yolov4-tiny-obj.cfg",
+		"weightPath":"truck/yolov4-tiny-obj_best.weights",
+		"metaPath":"truck/obj.data"
+	}
+}
